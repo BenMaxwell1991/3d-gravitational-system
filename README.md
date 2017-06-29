@@ -6,4 +6,4 @@ Using the verlet technique to model the effect of gravity on an N-bodied system.
 
 This file includes data from NASA of our solar system for the initial conditions.
 
-Format: name|mass(kg)|x-coordinate(m)|y-coordinate(m)|z-coordinate(m)|x-velocity(m/s)|y-velocity(m/s)|z-velocity(m/s)
+Format: name   mass(kg)   coordinate(x,y,z)   velocity(x,y,z)
