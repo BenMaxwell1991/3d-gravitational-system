@@ -288,7 +288,7 @@ int main()
     printf("Please enter a computational time interval (suggestion ~ 1,000):\n\n");  //Allows user to select dt, the smaller this value
     scanf("%lf", &time_interval);                             //the more accurate the simulation will be
 
-    printf("\nPlease enter the simulation duration (suggestion ~ 500,000,000:\n\n");   //Allows user to select the time period over which
+    printf("\nPlease enter the simulation duration (suggestion ~ 500,000,000):\n\n");   //Allows user to select the time period over which
     scanf("%lf", &duration);                             //the simulation will run.
 
     FILE* output = fopen("output.dat", "w");             //Data will be saved to "output"
