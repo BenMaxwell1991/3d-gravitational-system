@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1501869232 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\main.c
+	<stdio.h>
+	<stdlib.h>
+

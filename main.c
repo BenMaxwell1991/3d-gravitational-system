@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define DELTA 1E6
 
 
 struct object                           //Each body in the system is to be stored as a structure
@@ -68,7 +69,7 @@ void readfile(struct object body[], int body_num, FILE* input)
 double calc_energy(struct object body[], int body_num)
 {
     int i, j, k;
-    double energy = 0, R, G = 6.67408 * pow(10, -11);
+    double energy = 0, R, G = 6.67408E-11;
 
     for(i = 0; i < body_num; i++)
     {
@@ -80,7 +81,7 @@ double calc_energy(struct object body[], int body_num)
                          pow((body[i].position[1] - body[j].position[1]), 2) +
                          pow((body[i].position[2] - body[j].position[2]), 2));
 
-                    energy -= ((G*body[i].mass*body[j].mass)/ R);               //Calculates P.E. contribution as -G(M1)(M2)/R
+                    energy -= ((G*body[i].mass*body[j].mass)/ (2*R));               //Calculates P.E. contribution as -G(M1)(M2)/R
             }
         }
     }
@@ -93,7 +94,7 @@ double calc_energy(struct object body[], int body_num)
 }
 void calc_acceleration(struct object body[], int body_num, int a)   //Recalculates the acceleration of every
 {                                                                   //body in the system based on their new positions.
-    double R, G = 6.67408 * pow(10, -11);
+    double R, G = 6.67408E-11;
     int i, j, k;
 
     for(i = 0; i < body_num; i++)
@@ -108,9 +109,9 @@ void calc_acceleration(struct object body[], int body_num, int a)   //Recalculat
 
             if(i != j)
             {
-                if(body[i].position[0] == body[j].position[0] &&   //check to make sure two objects
-                   body[i].position[1] == body[j].position[1] &&   //don't occupy the same space
-                   body[i].position[2] == body[j].position[2])
+                if(fabs(body[i].position[0] - body[j].position[0]) < DELTA &&   //check to make sure two objects
+                   fabs(body[i].position[1] - body[j].position[1]) < DELTA &&   //don't occupy the same space
+                   fabs(body[i].position[2] - body[j].position[2]) < DELTA)
                 {
                     printf("Simulation failed, a collision has occurred\n");
                     return 1;
