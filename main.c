@@ -222,6 +222,7 @@ void plotdata(struct object body[], int body_num)
     int i, rc;
 
 
+
     fp = fopen("output.gp", "w");               //This will be the gnuplot script file
     if (fp == NULL) {
         printf("Could not open the script file for writing\n");  //Check to make sure file has been opened
@@ -241,8 +242,8 @@ void plotdata(struct object body[], int body_num)
         fprintf(fp, "set ylabel \"Y Displacement(m)\"\n");
         fprintf(fp, "set key right\n");
         fprintf(fp, "set zeroaxis\n");
-        fprintf(fp, "set xr [-2500000000000:2500000000000]\n");
-        fprintf(fp, "set yr [-2500000000000:2500000000000]\n");
+        //fprintf(fp, "set xr [-2500000000000:2500000000000]\n");
+        //fprintf(fp, "set yr [-2500000000000:2500000000000]\n");
         fprintf(fp, "splot ");
 
         for(i = 0; i < body_num; i++)                                              //Cycle through data as x1, y2, z1, x2, y2, z2.....
@@ -266,9 +267,9 @@ void plotdata(struct object body[], int body_num)
 int main()
 {
     FILE* input = fopen("input.txt", "r");
-    int i, j, k = 0, body_num = countfile(input);
+    int i, j, body_num = countfile(input);
     struct object body[body_num];
-    double energy[2], duration, time_interval, time_stamp = 0;
+    double k = 0.0, energy[2], duration, time_interval, time_stamp = 0;
 
     readfile(body, body_num, input);            //Uses input file to define each body.
     fclose(input);
@@ -304,7 +305,7 @@ int main()
 
         calc_velocity(body, body_num, time_interval);
 
-        if(k == 20)
+        if(k > duration/(time_interval*3000))
         {
             for(i = 0; i < body_num; i++)
             {
@@ -312,13 +313,14 @@ int main()
             }
             fprintf(output, "\n");
 
-            k = 0;
+            k = 0.0;
         }
         else
         {
             k += 1;
         }
     }
+    fclose(output);
 
     energy[1] = calc_energy(body, body_num);
 

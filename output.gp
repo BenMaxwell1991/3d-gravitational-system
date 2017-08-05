@@ -10,7 +10,5 @@ set xlabel "X Displacement(m)"
 set ylabel "Y Displacement(m)"
 set key right
 set zeroaxis
-set xr [-2500000000000:2500000000000]
-set yr [-2500000000000:2500000000000]
 splot  "output.dat" using 1:2:3 title 'Sun' with lines ,  "output.dat" using 4:5:6 title 'Mercury' with lines ,  "output.dat" using 7:8:9 title 'Venus' with lines ,  "output.dat" using 10:11:12 title 'Earth' with lines ,  "output.dat" using 13:14:15 title 'Moon' with lines ,  "output.dat" using 16:17:18 title 'Mars' with lines ,  "output.dat" using 19:20:21 title 'Jupiter' with lines ,  "output.dat" using 22:23:24 title 'HalleyComet' with lines , 
 pause -1
