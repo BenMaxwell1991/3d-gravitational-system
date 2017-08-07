@@ -123,7 +123,6 @@ void calc_acceleration(struct object body[], int body_num, int a)   //Recalculat
                         pow((body[i].position[2] - body[j].position[2]), 2));
 
 
-
                     body[i].acceleration[a][k] = body[i].acceleration[a][k] +
                                                ((G*body[j].mass*(body[j].position[k] - body[i].position[k]))/
                                                 pow(R, 3));
@@ -295,6 +294,8 @@ int main()
 
     FILE* output = fopen("output.dat", "w");             //Data will be saved to "output"
 
+    printf("STARTING\n\n");
+
     for(time_stamp = 0; time_stamp < duration; time_stamp += time_interval)
     {
         calc_acceleration(body, body_num, 0);                   //Combined, these calculations simulate the effect
@@ -321,6 +322,8 @@ int main()
         }
     }
     fclose(output);
+
+    printf("ENDING\n\n");
 
     energy[1] = calc_energy(body, body_num);
 
