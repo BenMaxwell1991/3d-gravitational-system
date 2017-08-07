@@ -2,6 +2,8 @@
 
 Using the verlet technique to model the effect of gravity on an N-bodied system.
 
+* View **Solar_System.gif** to see an example.
+
 * Graphic output requires gnuplot to be installed.
 
 

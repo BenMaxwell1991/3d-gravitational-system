@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <errno.h>
 #define DELTA 1E6
 
 
@@ -215,10 +217,11 @@ void enter_inertial_frame(struct object body[], int body_num)
 
 void plotdata(struct object body[], int body_num)
 {
-    char command[4096];
+    char command[409600];
     char *p = command;
     FILE *fp;
-    int i, rc;
+    DIR *dir;
+    int i, j, rc;
 
 
 
@@ -241,23 +244,48 @@ void plotdata(struct object body[], int body_num)
         fprintf(fp, "set ylabel \"Y Displacement(m)\"\n");
         fprintf(fp, "set key right\n");
         fprintf(fp, "set zeroaxis\n");
-        //fprintf(fp, "set xr [-2500000000000:2500000000000]\n");
-        //fprintf(fp, "set yr [-2500000000000:2500000000000]\n");
-        fprintf(fp, "splot ");
 
-        for(i = 0; i < body_num; i++)                                              //Cycle through data as x1, y2, z1, x2, y2, z2.....
-        {                                                                          //based on the number of bodies in system and plot
-                                                                                   //joining up points with lines.
-            fprintf(fp, " \"output.dat\" using %d:%d:%d title '%s' with lines , ", 3*i+1, 3*i+2, 3*i+3, body[i].body_name);
+        fprintf(fp, "set terminal pngcairo size 1600,1000 enhanced font \"Verdana,15\n");
+
+        dir = opendir("animation");
+        if (dir)
+        {
+            closedir(dir);
+        }
+        else if (ENOENT == errno)
+        {
+            /* Directory does not exist. */
+            fprintf(fp, "system('mkdir -p animation')\n");
+        }
+        else
+        {
+            return 7;
         }
 
+
+        for(j = 0; j < 180; j++)
+        {
+            fprintf(fp, "\nset output 'animation/output%d.png'\n", j);
+            fprintf(fp, "set view 60, %d \n", j);
+            fprintf(fp, "splot ");
+            for(i = 0; i < body_num; i++)                                              //Cycle through data as x1, y2, z1, x2, y2, z2.....
+            {                                                                          //based on the number of bodies in system and plot
+                                                                                       //joining up points with lines.
+                fprintf(fp, " \"output.dat\" using %d:%d:%d title '%s' with lines , ", 3*i+1, 3*i+2, 3*i+3, body[i].body_name);
+            }
+        }
+
+
         fprintf(fp, "\npause -1\n");
-        fclose(fp);
+
     }
+    fclose(fp);
 
     /* Call gnuplot to use the above script file */
+
     p += sprintf(p, "cmd /K \"C:\\Program Files (x86)\\gnuplot\\bin\\gnuplot.exe\"  output.gp"); //IMPORTANT!!! THIS CALLS GNUPLOT WHEN
-                                                                                                 //INSTALLED ON WINDOWS, IF GNUPLOT CANNOT BE
+
+    printf("Generating Animation Files...\n");                                                     //INSTALLED ON WINDOWS, IF GNUPLOT CANNOT BE
     printf("command: [%s]\n", command);                                                          //CALLED, CHANGE THIS PATH APPROPRIATELY
     rc = system(command);
     printf("command returned %d\n", rc);
@@ -315,6 +343,8 @@ int main()
             fprintf(output, "\n");
 
             k = 0.0;
+            printf("Computing Simulation: %.1lf%% \r", (time_stamp*100/duration));
+            fflush(stdout);
         }
         else
         {
