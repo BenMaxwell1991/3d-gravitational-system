@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <dirent.h>
 #include <errno.h>
 #define DELTA 1E6
+#define OK       0
+#define NO_INPUT 1
+#define TOO_LONG 2
 
 
 struct object                           //Each body in the system is to be stored as a structure
@@ -39,6 +43,32 @@ int countfile(input)                     //Counts the number of lines in the
             ++lines;
     }
     return lines;
+}
+
+static int getLine (char *prmpt, char *buff, size_t sz)
+{
+    int ch, extra;
+
+    // Get line with buffer overrun protection.
+    if (prmpt != NULL) {
+        printf ("%s", prmpt);
+        fflush (stdout);
+    }
+    if (fgets (buff, sz, stdin) == NULL)
+        return NO_INPUT;
+
+    // If it was too long, there'll be no newline. In that case, we flush
+    // to end of line so that excess doesn't affect the next call.
+    if (buff[strlen(buff)-1] != '\n') {
+        extra = 0;
+        while (((ch = getchar()) != '\n') && (ch != EOF))
+            extra = 1;
+        return (extra == 1) ? TOO_LONG : OK;
+    }
+
+    // Otherwise remove newline and give string back to caller.
+    buff[strlen(buff)-1] = '\0';
+    return OK;
 }
 
 
@@ -171,12 +201,12 @@ void calc_velocity(struct object body[], int body_num, double time_interval) //U
 void enter_inertial_frame(struct object body[], int body_num)
 {
     int i, j;
-    double total_mass, velocity_com[3], center_of_mass[3];
+    double total_mass, momentum_com[3], center_of_mass[3];
 
     total_mass = 0;
-    velocity_com[0] = 0;
-    velocity_com[1] = 0;
-    velocity_com[2] = 0;
+    momentum_com[0] = 0;
+    momentum_com[1] = 0;
+    momentum_com[2] = 0;
     center_of_mass[0] = 0;
     center_of_mass[1] = 0;
     center_of_mass[2] = 0;
@@ -191,16 +221,16 @@ void enter_inertial_frame(struct object body[], int body_num)
         for(i = 0; i < body_num; i++)
         {
             center_of_mass[j] += body[i].mass * body[i].position[j];
-            velocity_com[j] += body[i].mass * body[i].velocity[j];
+            momentum_com[j] += body[i].mass * body[i].velocity[j];
         }
 
         center_of_mass[j] = center_of_mass[j] / total_mass;
-        velocity_com[j] = velocity_com[j] / total_mass;
+        momentum_com[j] = momentum_com[j] / total_mass;
 
         for(i = 0; i < body_num; i++)
         {
             body[i].position[j] -= center_of_mass[j];
-            body[i].velocity[j] -= velocity_com[j];
+            body[i].velocity[j] -= momentum_com[j];
         }
     }
     printf("\nIntertial Frame has been entered\n\n");
@@ -221,7 +251,7 @@ void plotdata(struct object body[], int body_num)
     char *p = command;
     FILE *fp;
     DIR *dir;
-    int i, j, rc;
+    int i, j, rc, data_res = 3000, image_res = 400;
 
 
 
@@ -244,6 +274,9 @@ void plotdata(struct object body[], int body_num)
         fprintf(fp, "set ylabel \"Y Displacement(m)\"\n");
         fprintf(fp, "set key right\n");
         fprintf(fp, "set zeroaxis\n");
+        fprintf(fp, "set xrange [-2E12:2E12]\n");
+        fprintf(fp, "set yrange [-2E12:2E12]\n");
+        fprintf(fp, "set zrange [-1.5E11:1.5E11]\n");
 
         fprintf(fp, "set terminal pngcairo size 1600,1000 enhanced font \"Verdana,15\n");
 
@@ -263,15 +296,17 @@ void plotdata(struct object body[], int body_num)
         }
 
 
-        for(j = 0; j < 180; j++)
+        for(j = 0; j < image_res; j++)
         {
             fprintf(fp, "\nset output 'animation/output%d.png'\n", j);
-            fprintf(fp, "set view 60, %d \n", j);
+            fprintf(fp, "set view %lf, %lf \n", 50 + 10*(1+cos(2*M_PI*j/image_res)), 30*(1+sin(2*M_PI*j/image_res)));
             fprintf(fp, "splot ");
+
             for(i = 0; i < body_num; i++)                                              //Cycle through data as x1, y2, z1, x2, y2, z2.....
             {                                                                          //based on the number of bodies in system and plot
                                                                                        //joining up points with lines.
-                fprintf(fp, " \"output.dat\" using %d:%d:%d title '%s' with lines , ", 3*i+1, 3*i+2, 3*i+3, body[i].body_name);
+                fprintf(fp, " \"output.dat\" using %d:%d:%d every ::::%d title '%s' w l ls %d, ", 3*i+1, 3*i+2, 3*i+3, j*data_res/(image_res-1), body[i].body_name, i+1);
+                fprintf(fp, "\"output.dat\" using %d:%d:%d every ::%d::%d notitle with points pt 7 lc %d, ", 3*i+1, 3*i+2, 3*i+3, j*data_res/(image_res-1), j*data_res/(image_res-1), i+1);
             }
         }
 
@@ -298,7 +333,7 @@ int main()
     struct object body[body_num];
     double k = 0.0, energy[2], duration, time_interval, time_stamp = 0;
 
-    readfile(body, body_num, input);            //Uses input file to define each body.
+    readfile(body, body_num, input);                                                //Uses input file to define each body.
     fclose(input);
 
     while(j != 1 && j != 2)
@@ -353,7 +388,7 @@ int main()
     }
     fclose(output);
 
-    printf("ENDING\n\n");
+    printf("\n\nENDING\n\n");
 
     energy[1] = calc_energy(body, body_num);
 
