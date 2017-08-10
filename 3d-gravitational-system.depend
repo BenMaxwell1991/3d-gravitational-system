@@ -1,8 +1,80 @@
 # depslib dependency file v1.0
-1502295336 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\main.c
+1502393170 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<dirent.h>
 	<errno.h>
+	"config.h"
+	"data.h"
+	"verlet.h"
+	"debug.h"
+
+1502384103 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\config.h
+
+1502393170 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\config.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	"data.h"
+	"config.h"
+	"verlet.h"
+
+1502363180 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\plotdata.h
+	"config.h"
+
+1502363163 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\plotdata.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	"plotdata.h"
+	"config.h"
+
+1502390794 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	"data.h"
+	"config.h"
+	"verlet.h"
+
+1502390794 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.h
+	"config.h"
+
+1502391612 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.h
+	"config.h"
+	"data.h"
+	"debug.h"
+
+1502392356 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	"data.h"
+	"config.h"
+	"verlet.h"
+	"debug.h"
+
+1502391951 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\debug.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	"debug.h"
+
+1502391686 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\debug.h
 
