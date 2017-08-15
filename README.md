@@ -30,10 +30,15 @@ New path must point to another input file of the same JSon format.
 ## program arguments
 
 -d --duration "double" sets duration of simulation in seconds.
+
 -ti --timeinterval "double" sets time interval between each simulation iteration in seconds, lower value hinders performance but increases accuracy.
+
 -if --intertialframe "boolean" (1 = yes) (0 = no) if true, centers simulation on it's common center of mass and defines this as stationary.
+
 -gp --gnuplot "boolean" (1 = yes) (0 = no) if true, once output.dat is written, it will then be plotted using gnuplot (make sure this is installed).
+
 -dr --datares "integer" defines the number of data points for each object to be saved to output.dat, decreases performance but creates smoother plot.
+
 -ir --imageres "integer" defines the number of output .png files to be created by gnuplot during plotting.
 
 
