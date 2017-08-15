@@ -4,19 +4,21 @@
 #include <dirent.h>
 #include <errno.h>
 #include <string.h>
+#include <jansson.h>
 
 #include "data.h"
 #include "config.h"
 #include "verlet.h"
+#include "jsonUtils.h"
 
 
-int plotData(Object body[], int body_num, Config *config)
+int plotData(Object *body, int body_num, Config *config)
 {
     char command[409600];
     char *p = command;
     FILE *fp;
     DIR *dir;
-    int i, j, rc, pltpoint, data_res = 3000, image_res = 400;
+    int i, j, rc = 0, pltpoint;
 
     pltpoint = config->data_resolution/(config->image_resolution-1);
 
@@ -96,7 +98,7 @@ int plotData(Object body[], int body_num, Config *config)
 
 int printBody(Object body)      //Prints out each value currently attributed to the body in question
 {
-    int rc;
+    int rc = 0;
 
     printf(" Name = %s \n"
         " Mass = %ekg \n"
@@ -114,52 +116,70 @@ int printBody(Object body)      //Prints out each value currently attributed to 
     return rc;
 }
 
-int countFile(FILE* input, int *line)               //Counts the number of lines in the
-{                                                       //input file as new lines + 1
-    int rc, ch;
-
-    rewind(input);
-    *line = 1;
-
-    while (EOF != (ch = getc(input)))
-    {
-        if ('\n' == ch)
-            ++(*line);
-    }
-    return rc;
-}
-
-
-int readFile(Object body[], int body_num, FILE* input)
+int readJsonFile(Object **objectPtr, int *body_num)
 {
-    int rc, i;
+    int rc = 0, i, j;
+    FILE *input = fopen("solar_system.json", "r");
+    size_t flags = 0;
+    json_error_t error;
 
-    rewind(input);                          //Goes back to the start of the input
-                                            //file before we read in the values
-    for(i = 0; i < body_num; i++)           //Reads the input file, setting the
-    {                                       //variables for each body in the system
+    json_t *input_json = json_loadf(input, flags, &error);
+    json_t *solar_system;
+    json_t *objectJson;
+    json_t *position;
+    json_t *velocity;
 
-        fscanf(input, "%s %lf %lf %lf %lf %lf %lf %lf",
-              body[i].body_name,
-              &body[i].mass,
-              &body[i].position[0], &body[i].position[1], &body[i].position[2],
-              &body[i].velocity[0], &body[i].velocity[1], &body[i].velocity[2]);
-        body[i].acceleration[0][0] = 0;
-        body[i].acceleration[0][1] = 0;
-        body[i].acceleration[0][2] = 0;
-        body[i].acceleration[1][0] = 0;
-        body[i].acceleration[1][1] = 0;
-        body[i].acceleration[1][2] = 0;
-
-        //rc = printBody(body[i]);             //Print values to check if they are sensible
+    if(input_json == NULL)
+    {
+        printf("Json file could not be read\n");
+        rc = 1;
+        exit(rc);
     }
+
+    rc = getJsonArrayFromJsonObject(input_json, "solar_system", &solar_system);
+    if(rc == 0)
+    {
+        *body_num = json_array_size(solar_system);
+        printf("\nNumber of bodies = %d\n\n", *body_num);
+        Object *bodies = *objectPtr = calloc(*body_num, sizeof(Object));
+
+        for(i = 0; i < *body_num; i++)
+        {
+            Object *body = &bodies[i];
+            rc = getJsonObjectFromJsonArray("solar_system", solar_system, i, &objectJson);
+            if(rc == 0) rc = getStringFromJsonObject(objectJson, "name", body->body_name, sizeof(body->body_name));
+            if(rc == 0) rc = getDoubleFromJsonObject(objectJson, "mass", &body->mass);
+
+            if(rc == 0) rc = getJsonArrayFromJsonObject(objectJson, "position", &position);
+            if(rc == 0) rc = getJsonArrayFromJsonObject(objectJson, "velocity", &velocity);
+            for(j = 0; j < 3; j++)
+            {
+
+                if(rc == 0) rc = getDoubleFromJsonArray(position, j, &body->position[j]);
+                if(rc == 0) rc = getDoubleFromJsonArray(velocity, j, &body->velocity[j]);
+            }
+
+
+            if(rc == 0)
+            {
+                //printBody(bodies[i]);
+                //printf("%s\n", body->body_name);
+                //printf("%f\n", body->mass);
+            }
+        }
+    }
+
+
+    fclose(input);
     return rc;
 }
 
-int enterIntertialFrame(Object body[], int body_num)
+int enterIntertialFrame(Object *bodies, int body_num)
 {
     int rc = 0, i, j;
     double total_mass, momentum_com[3], center_of_mass[3];
+
+
 
     total_mass = 0;
     momentum_com[0] = 0;
@@ -171,15 +191,15 @@ int enterIntertialFrame(Object body[], int body_num)
 
     for(i = 0; i < body_num; i++)
     {
-        total_mass += body[i].mass;
+        total_mass += bodies[i].mass;
     }
 
     for(j = 0; j < 3; j++)
     {
         for(i = 0; i < body_num; i++)
         {
-            center_of_mass[j] += body[i].mass * body[i].position[j];
-            momentum_com[j] += body[i].mass * body[i].velocity[j];
+            center_of_mass[j] += bodies[i].mass * bodies[i].position[j];
+            momentum_com[j] += bodies[i].mass * bodies[i].velocity[j];
         }
 
         center_of_mass[j] = center_of_mass[j] / total_mass;
@@ -187,10 +207,11 @@ int enterIntertialFrame(Object body[], int body_num)
 
         for(i = 0; i < body_num; i++)
         {
-            body[i].position[j] -= center_of_mass[j];
-            body[i].velocity[j] -= momentum_com[j];
+            bodies[i].position[j] -= center_of_mass[j];
+            bodies[i].velocity[j] -= momentum_com[j];
         }
     }
     printf("Intertial Frame has been entered\n\n");
     return rc;
 }
+

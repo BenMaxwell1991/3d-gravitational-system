@@ -1,24 +1,27 @@
 # depslib dependency file v1.0
-1502393170 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\main.c
+1502836125 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\main.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<dirent.h>
 	<errno.h>
+	<jansson.h>
 	"config.h"
 	"data.h"
 	"verlet.h"
 	"debug.h"
+	"jsonUtils.h"
 
 1502384103 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\config.h
 
-1502393170 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\config.c
+1502835415 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\config.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<dirent.h>
 	<errno.h>
 	<string.h>
+	<jansson.h>
 	"data.h"
 	"config.h"
 	"verlet.h"
@@ -36,26 +39,29 @@
 	"plotdata.h"
 	"config.h"
 
-1502390794 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.c
+1502836224 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<dirent.h>
 	<errno.h>
 	<string.h>
+	<jansson.h>
 	"data.h"
 	"config.h"
 	"verlet.h"
+	"jsonUtils.h"
 
-1502390794 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.h
+1502836224 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\data.h
+	<jansson.h>
 	"config.h"
 
-1502391612 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.h
+1502835277 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.h
 	"config.h"
 	"data.h"
 	"debug.h"
 
-1502392356 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.c
+1502835530 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\verlet.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -77,4 +83,29 @@
 	"debug.h"
 
 1502391686 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\debug.h
+
+1502835921 source:c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\jsonutils.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	<jansson.h>
+	"data.h"
+	"config.h"
+	"verlet.h"
+	"jsonUtils.h"
+
+1502836117 c:\users\ben\git\git.com\benmaxwell1991\3d-gravitational-system\jsonutils.h
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<dirent.h>
+	<errno.h>
+	<string.h>
+	<jansson.h>
+	"data.h"
+	"config.h"
+	"verlet.h"
 

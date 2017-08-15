@@ -4,16 +4,44 @@
 #include <dirent.h>
 #include <errno.h>
 #include <string.h>
+#include <jansson.h>
+
 
 #include "data.h"
 #include "config.h"
 #include "verlet.h"
 
+int longDoubleHandler(int argc, int i, char *argv[], char *paramShort, char *paramLong, double *value)
+{
+    int rc = 0;
+    char *endptr;
+    char* arg = argv[i];
+
+    if((strcmp(arg, paramShort) == 0) || (strcmp(arg, paramLong) == 0))
+        {
+            if(i == argc)
+            {
+                printf("Please specify a %s\n", paramLong);
+                rc = 1;
+
+            }
+            else if(strtod(argv[i+1], &endptr) != 0)
+            {
+                *value = strtod(argv[i+1], &endptr);
+            }
+            else
+            {
+                printf("Invalid %s input. Endpointer: %s\n", paramLong, endptr);
+                rc = 2;
+            }
+        }
+    return rc;
+}
+
 
 int getConfig(int argc, char*argv[], Config *config)
 {
     int rc = 0, i;
-    char *endptr, *errstr;
 
     for(i = 0; i < argc; i++)
     {
@@ -21,43 +49,9 @@ int getConfig(int argc, char*argv[], Config *config)
 
         printf("Arg[%d] = %s\n", i, arg);
 
-        if((strcmp(arg, "-d") == 0) || (strcmp(arg, "--duration") == 0))
-        {
-            if(i == argc)
-            {
-                printf("Please specify a duration\n");
-                rc = 1;
+        rc = longDoubleHandler(argc, i, argv, "-d", "--duration", &config->duration);
 
-            }
-            else if(strtold(argv[i+1], &endptr) != 0)
-            {
-                config->duration = strtold(argv[i+1], &endptr);
-            }
-            else
-            {
-                printf("Invalid duration input. Endpointer: %s\n", endptr);
-                rc = 2;
-            }
-        }
-
-        if((strcmp(arg, "-ti") == 0) || (strcmp(arg, "--timeint") == 0))
-        {
-            if(i == argc)
-            {
-                printf("Please specify a time interval\n");
-                rc = 1;
-
-            }
-            else if(strtold(argv[i+1], &endptr) != 0)
-            {
-                config->time_interval = strtold(argv[i+1], &endptr);
-            }
-            else
-            {
-                printf("Invalid time interval input. Endpointer: %s\n", endptr);
-                rc = 2;
-            }
-        }
+        rc = longDoubleHandler(argc, i, argv, "-ti", "--timeinterval", &config->time_interval);
 
         if((strcmp(arg, "-if") == 0) || (strcmp(arg, "--inertialframe") == 0))
         {
@@ -152,8 +146,8 @@ int configToString(Config *config)
     if(config->inertial_frame != 0){printf("Config Enter Inertial Frame: False\n");}
     printf("Config Data Resolution (Number of data points): %d\n", config->data_resolution);
     printf("Config Image Resolution (Number of .png output files): %d\n", config->image_resolution);
-    if(config->gnuplotting = 0){printf("Config Gnuplot: True\n", config->gnuplotting);}
-    if(config->gnuplotting == 0){printf("Config Gnuplot: True\n", config->gnuplotting);}
+    if(config->gnuplotting == 0){printf("Config Gnuplot: True\n");}
+    if(config->gnuplotting == 0){printf("Config Gnuplot: True\n");}
     return rc;
 }
 

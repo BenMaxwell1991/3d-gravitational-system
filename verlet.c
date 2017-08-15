@@ -13,10 +13,10 @@
 
 #define DELTA 1E6
 
-int calcAcceleration(Object body[], int body_num, int a)                       //Recalculates the acceleration of every
+int calcAcceleration(Object *body, int body_num, int a)                       //Recalculates the acceleration of every
 {                                                                              //body in the system based on their new positions.
     double R, G = 6.67408E-11;
-    int rc, i, j, k;
+    int rc = 0, i, j, k;
 
     for(i = 0; i < body_num; i++)
     {
@@ -54,9 +54,9 @@ int calcAcceleration(Object body[], int body_num, int a)                       /
     return rc;
 }
 
-int calcPosition(Object body[], int body_num, double time_interval)            //Calculates the new position of each body
+int calcPosition(Object *body, int body_num, double time_interval)            //Calculates the new position of each body
 {                                                                              //using the verlet technique, which takes into account
-    int rc, i, j;                                                               //both velocity and acceleration.
+    int rc = 0, i, j;                                                               //both velocity and acceleration.
 
     for(i = 0; i < body_num; i++)
     {
@@ -71,9 +71,9 @@ int calcPosition(Object body[], int body_num, double time_interval)            /
     return rc;
 }
 
-int calcVelocity(Object body[], int body_num, double time_interval)            //Updates the velocity of each body, using the
+int calcVelocity(Object *body, int body_num, double time_interval)            //Updates the velocity of each body, using the
 {                                                                              //verlet technique.
-    int rc, i, j;
+    int rc = 0, i, j;
 
     for(i = 0; i < body_num; i++)
     {
@@ -87,7 +87,7 @@ int calcVelocity(Object body[], int body_num, double time_interval)            /
     return rc;
 }
 
-int calcEnergy(Object body[], int body_num, double *energy, int a)
+int calcEnergy(Object *body, int body_num, double *energy, int a)
 {
     int rc = 0, i, j;
     double R, G = 6.67408E-11;
@@ -118,7 +118,7 @@ int calcEnergy(Object body[], int body_num, double *energy, int a)
 }
 
 
-int verletGrav(Object body[], Config *config, int body_num, double energy[])
+int verletGrav(Object *body, Config *config, int body_num, double *energy)
 {
     int rc, i, k = 0;
     double time_stamp;
@@ -127,12 +127,12 @@ int verletGrav(Object body[], Config *config, int body_num, double energy[])
 
     if(output == NULL)
     {
-        printf("Failed to open file %s\n", output);
+        printf("Failed to open file\n");
         rc = 1;
     }
     else
     {
-        printf("File Opened %s\n", output);
+        printf("File Opened\n");
     }
 
     rc = calcEnergy(body, body_num, energy, 0);
