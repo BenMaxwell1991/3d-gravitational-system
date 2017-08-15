@@ -6,58 +6,40 @@
 		<Cursor>
 			<Cursor1 position="634" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="15" />
-			<Collapse line="25" />
-		</Folding>
-	</File>
-	<File name="data.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="394" topLine="0" />
-		</Cursor>
 	</File>
 	<File name="jsonUtils.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="205" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="verlet.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="461" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="jsonUtils.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2767" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="14" />
-			<Collapse line="32" />
-			<Collapse line="48" />
-			<Collapse line="72" />
-			<Collapse line="90" />
-			<Collapse line="113" />
-			<Collapse line="119" />
-			<Collapse line="129" />
-			<Collapse line="135" />
-			<Collapse line="141" />
-			<Collapse line="147" />
-		</Folding>
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="253" topLine="8" />
 		</Cursor>
 	</File>
-	<File name="config.c" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="data.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2209" topLine="66" />
+			<Cursor1 position="394" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="14" />
-			<Collapse line="139" />
-			<Collapse line="154" />
-			<Collapse line="165" />
-		</Folding>
 	</File>
 	<File name="config.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="201" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="data.c" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2493" topLine="48" />
 		</Cursor>
 	</File>
 	<File name="debug.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -65,31 +47,17 @@
 			<Cursor1 position="208" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="data.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="config.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4914" topLine="0" />
+			<Cursor1 position="2209" topLine="66" />
 		</Cursor>
 		<Folding>
-			<Collapse line="15" />
-			<Collapse line="99" />
-			<Collapse line="177" />
+			<Collapse line="14" />
 		</Folding>
-	</File>
-	<File name="verlet.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="461" topLine="0" />
-		</Cursor>
 	</File>
 	<File name="verlet.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="4534" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="16" />
-			<Collapse line="57" />
-			<Collapse line="74" />
-			<Collapse line="90" />
-			<Collapse line="121" />
-		</Folding>
 	</File>
 </CodeBlocks_layout_file>
