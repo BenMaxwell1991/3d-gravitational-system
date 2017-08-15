@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="--duration 100000000 --timeinterval 10000 --inertialframe 0 --datares 15000 --imageres 50 -gp 0" />
+				<Option parameters="--duration 1000000000 --timeinterval 1000 --inertialframe 0 --datares 3000 --imageres 500 -gp 0" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

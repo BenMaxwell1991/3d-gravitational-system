@@ -67,7 +67,7 @@ int getConfig(int argc, char*argv[], Config *config)
             }
             else
             {
-                printf("Invalid inertial frame parameter (0 = yes, 1 = no).\n");
+                printf("Invalid inertial frame parameter (1 = yes, 0 = no).\n");
                 rc = 2;
             }
         }
@@ -86,7 +86,7 @@ int getConfig(int argc, char*argv[], Config *config)
             }
             else
             {
-                printf("Invalid gnuplot parameter (0 = yes, 1 = no).\n");
+                printf("Invalid gnuplot parameter (1 = yes, 0 = no).\n");
                 rc = 2;
             }
         }
